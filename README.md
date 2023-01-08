@@ -32,6 +32,8 @@ python -m src.summary
 
 ### Overview
 
+#### Train
+
 | path                                         | split     | step | top1_acc |
 | :------------------------------------------- | :-------- | ---: | -------: |
 | logs/cifar100/resnet18-wonorm/1673167005     | train_200 | 4400 |        1 |
@@ -46,6 +48,8 @@ python -m src.summary
 | logs/cifar100/vit-aux-3x4x256-8x8/1673196895 | train_200 | 4800 |    0.455 |
 | logs/cifar100/vit-12x256-8x8/1673178974      | train_200 | 5000 |    0.455 |
 | logs/cifar100/toy-dilated/1673172683         | train_200 | 4100 |     0.19 |
+
+#### Test
 
 | path                                         | split | step | top1_acc |
 | :------------------------------------------- | :---- | ---: | -------: |
