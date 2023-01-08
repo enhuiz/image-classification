@@ -45,6 +45,9 @@ def plot(paths, args):
         for y in args.ys:
             gdf = gdf.sort_values("global_step")
 
+            if gdf[y].isna().all():
+                continue
+
             gdf.plot(
                 x="global_step",
                 y=y,
