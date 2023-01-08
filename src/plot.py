@@ -53,6 +53,13 @@ def plot(paths, args):
                 marker="x" if len(gdf) < 100 else None,
             )
 
+    plt.gca().legend(
+        loc="center left",
+        fancybox=True,
+        shadow=True,
+        bbox_to_anchor=(1.04, 0.5),
+    )
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -66,7 +73,7 @@ def main():
 
     paths = args.log_dir.rglob(f"**/{args.filename}")
     plot(paths, args)
-    plt.savefig(args.out_path)
+    plt.savefig(args.out_path, bbox_inches="tight")
 
 
 if __name__ == "__main__":
