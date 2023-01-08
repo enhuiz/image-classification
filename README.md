@@ -22,6 +22,12 @@ Where `config/cifar100/resnet18.yml` can be any configuration you want to run.
 bash ./scripts/plot.sh
 ```
 
+## Summary
+
+```bash
+python -m src.summary
+```
+
 ## Results
 
 ### ResNets
