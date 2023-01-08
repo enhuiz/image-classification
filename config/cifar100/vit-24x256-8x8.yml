@@ -1,0 +1,2 @@
+dataset: cifar100
+model: vit-24x256-8x8

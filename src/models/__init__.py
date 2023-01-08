@@ -23,6 +23,13 @@ def get_model():
             num_heads=4,
             patch_size=8,
         )
+    elif cfg.model.lower() == "vit-24x256-8x8":
+        model = ViT(
+            num_layers=24,
+            hidden_channels=256,
+            num_heads=4,
+            patch_size=8,
+        )
     elif cfg.model.lower() == "vit-b-8x8":
         model = ViT(
             num_layers=12,
