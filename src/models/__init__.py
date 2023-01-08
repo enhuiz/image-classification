@@ -1,4 +1,5 @@
-from torchvision.models import resnet18, resnet34, resnet50
+from torch import nn
+from torchvision.models import ResNet, resnet18, resnet34, resnet50
 
 from .resnet_utils import update_resnet_
 from .toy import ToyDilatedModel
@@ -6,7 +7,7 @@ from .vit import ViT
 from .vit_aux import ViTAux
 
 
-def get_model():
+def get_model(num_classes=None):
     from ..config import cfg
 
     if cfg.model.lower() == "resnet18":
@@ -51,5 +52,8 @@ def get_model():
 
     if cfg.model.lower().startswith("resnet"):
         update_resnet_(model)
+        assert isinstance(model, ResNet)
+        if num_classes is not None:
+            model.fc = nn.Linear(model.fc.in_features, num_classes)
 
     return model

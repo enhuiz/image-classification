@@ -24,6 +24,7 @@ class Config(ConfigBase):
     resnet_norm_type: str = "bn"
     normalizer: bool = True
     per_channel_normalizer: bool = False
+    tailor_num_classes: bool = False
 
     @property
     def num_classes(self):

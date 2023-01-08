@@ -19,7 +19,8 @@ _logger = logging.getLogger(__name__)
 
 
 def load_engines():
-    model = get_model()
+    model = get_model(cfg.num_classes if cfg.tailor_num_classes else None)
+
     if cfg.normalizer:
         if cfg.per_channel_normalizer:
             model.normalizer = Normalizer(num_channels=3, axis=1)
