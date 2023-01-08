@@ -18,6 +18,7 @@ class Config(ConfigBase):
     max_iter: int = 5_000
     gradient_clipping: float = 100
     eval_every: int = 100
+    save_every: int = 5_000
 
     finetune_level: int = 5
     mixstyle_level: int = 0
