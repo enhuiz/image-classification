@@ -1,1 +1,3 @@
-# image-classification
+# Image Classification
+
+Compare some image classification models.
