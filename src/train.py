@@ -12,6 +12,7 @@ from tqdm import tqdm
 
 from .config import cfg
 from .models import get_model
+from .normalizer import Normalizer
 from .utils import Diagnostic, setup_logging, to_device, trainer
 
 _logger = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ _logger = logging.getLogger(__name__)
 
 def load_engines():
     model = get_model()
+    model.normalizer = Normalizer()
     engines = dict(
         model=trainer.Engine(model=model, config=cfg.ds_cfg),
     )
@@ -102,7 +104,8 @@ def main():
         if trainer.get_cmd() == "diag-start":
             diagnostic.attach()
 
-        logits = model(x)
+        x_normed = model.normalizer(x)
+        logits = model(x_normed)
         loss = F.cross_entropy(logits, y)
 
         top1_acc = (logits.argmax(dim=-1) == y).float().mean().item()
