@@ -124,12 +124,14 @@ def main():
         else:
             logits = model(x_normed)
 
-        loss = F.cross_entropy(logits, y)
+        ce_loss = F.cross_entropy(logits, y)
+        aux_losses = engines.gather_attribute("loss")
+        loss = ce_loss + sum(aux_losses.values())
 
         top1_acc = (logits.argmax(dim=-1) == y).float().mean().item()
 
-        stats = {"loss.ce": loss.item(), "acc.top1": top1_acc}
-        stats |= {k: v.item() for k, v in engines.gather_attribute("loss").items()}
+        stats = {"loss.ce": ce_loss.item(), "acc.top1": top1_acc}
+        stats |= {k: v.item() for k, v in aux_losses.items()}
         stats |= engines.gather_attribute("scalar")
 
         return loss, stats
