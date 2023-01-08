@@ -57,6 +57,7 @@ def plot(paths, args):
                 label=f"{gtag}/{y}",
                 ax=plt.gca(),
                 marker="x" if len(gdf) < 100 else None,
+                alpha=0.7,
             )
 
     plt.gca().legend(
