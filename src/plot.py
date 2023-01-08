@@ -41,7 +41,10 @@ def plot(paths, args):
 
     df = pd.concat(dfs)
 
-    for group_name, gdf in df.groupby("group"):
+    for gtag, gdf in sorted(
+        df.groupby("group"),
+        key=lambda p: (p[0].split("/")[-1], p[0]),
+    ):
         for y in args.ys:
             gdf = gdf.sort_values("global_step")
 
@@ -51,7 +54,7 @@ def plot(paths, args):
             gdf.plot(
                 x="global_step",
                 y=y,
-                label=f"{group_name}/{y}",
+                label=f"{gtag}/{y}",
                 ax=plt.gca(),
                 marker="x" if len(gdf) < 100 else None,
             )
