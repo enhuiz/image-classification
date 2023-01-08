@@ -44,14 +44,14 @@ def main():
         raise NotImplementedError(cfg.dataset)
 
     train_ds = Dataset(
-        "data",
+        str(cfg.data_dir),
         train=True,
         download=True,
         transform=transforms.ToTensor(),
     )
 
     test_ds = Dataset(
-        "data",
+        str(cfg.data_dir),
         train=False,
         download=True,
         transform=transforms.ToTensor(),
