@@ -2,23 +2,31 @@ from torchvision.models import resnet18, resnet34, resnet50
 
 from .resnet_utils import update_resnet_
 from .toy import ToyDilatedModel
+from .vit import ViT
 
 
 def get_model():
     from ..config import cfg
 
     if cfg.model.lower() == "resnet18":
-        ret = resnet18()
+        model = resnet18()
     elif cfg.model.lower().lower() == "resnet34":
-        ret = resnet34()
+        model = resnet34()
     elif cfg.model.lower() == "resnet50":
-        ret = resnet50()
+        model = resnet50()
     elif cfg.model.lower() == "toy-dilated":
-        ret = ToyDilatedModel()
+        model = ToyDilatedModel()
+    elif cfg.model.lower() == "vit-12x256-8x8":
+        model = ViT(
+            num_layers=12,
+            hidden_channels=256,
+            num_heads=4,
+            patch_size=8,
+        )
     else:
         raise NotImplementedError(cfg.model.lower())
 
     if cfg.model.lower().startswith("resnet"):
-        update_resnet_(ret)
+        update_resnet_(model)
 
-    return ret
+    return model
