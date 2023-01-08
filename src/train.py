@@ -107,7 +107,7 @@ def main():
 
         top1_acc = (logits.argmax(dim=-1) == y).float().mean().item()
 
-        stats = {"loss/ce": loss.item(), "acc/top1": top1_acc}
+        stats = {"loss/ce": loss.item(), "acc.top1": top1_acc}
         stats |= engines.gather_attribute("scalar")
 
         return loss, stats
@@ -138,7 +138,7 @@ def main():
         stats = {k: sum(v) / len(v) for k, v in stats.items()}
         stats["global_step"] = engines.global_step
         stats["name"] = name
-        stats["acc/top1"] = top1_acc
+        stats["acc.top1"] = top1_acc
 
         _logger.info(f"Eval: {stats}.")
 
