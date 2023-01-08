@@ -17,6 +17,7 @@ class Config(ConfigBase):
     warmup_num_steps: int = 5_00
     max_iter: int = 5_000
     gradient_clipping: float = 100
+    normalizer: bool = True
 
     @property
     def num_classes(self):

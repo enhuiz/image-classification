@@ -104,7 +104,11 @@ def main():
         if trainer.get_cmd() == "diag-start":
             diagnostic.attach()
 
-        x_normed = model.normalizer(x)
+        if cfg.normalizer:
+            x_normed = model.normalizer(x)
+        else:
+            x_normed = x
+
         logits = model(x_normed)
         loss = F.cross_entropy(logits, y)
 

@@ -1,0 +1,4 @@
+# Without input norm
+dataset: cifar100
+model: resnet18
+normalizer: false
