@@ -65,7 +65,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("ys", nargs="+")
     parser.add_argument("--log-dir", default="logs", type=Path)
-    parser.add_argument("--out-path", default="out.png")
+    parser.add_argument("--output", default="out.png")
     parser.add_argument("--filename", default="log.txt")
     parser.add_argument("--max-x", default=None)
     parser.add_argument("--group-level", default=1)
@@ -73,7 +73,7 @@ def main():
 
     paths = args.log_dir.rglob(f"**/{args.filename}")
     plot(paths, args)
-    plt.savefig(args.out_path, bbox_inches="tight")
+    plt.savefig(args.output, bbox_inches="tight")
 
 
 if __name__ == "__main__":
