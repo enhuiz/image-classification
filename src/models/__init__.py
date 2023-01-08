@@ -1,6 +1,7 @@
 from torchvision.models import resnet18, resnet34, resnet50
 
 from .resnet_utils import update_resnet_
+from .toy import ToyDilatedModel
 
 
 def get_model():
@@ -12,6 +13,8 @@ def get_model():
         ret = resnet34()
     elif cfg.model.lower() == "resnet50":
         ret = resnet50()
+    elif cfg.model.lower() == "toy-dilated":
+        ret = ToyDilatedModel()
     else:
         raise NotImplementedError(cfg.model.lower())
 
