@@ -31,3 +31,7 @@ bash ./scripts/plot.sh
 ## Insights
 
 - TODO
+
+## Puzzles
+
+Why does the loss suddenly drop periodically (after each epoch)?
