@@ -30,7 +30,7 @@ python -m src.summary
 
 ## Results
 
-### ResNets
+### Compare Different ResNet Settings
 
 ![](figures/resnets/loss.png)
 
@@ -66,6 +66,12 @@ python -m src.summary
 #### Puzzles
 
 - Why does the loss suddenly drop periodically (after each epoch)?
+
+### Compare Different Models
+
+![](figures/models/loss.png)
+
+![](figures/models/acc.top1.png)
 
 ## References
 

@@ -1,0 +1,2 @@
+dataset: cifar100
+model: vit-b-8x8

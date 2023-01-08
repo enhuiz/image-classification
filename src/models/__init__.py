@@ -23,6 +23,13 @@ def get_model():
             num_heads=4,
             patch_size=8,
         )
+    elif cfg.model.lower() == "vit-b-8x8":
+        model = ViT(
+            num_layers=12,
+            hidden_channels=768,
+            num_heads=12,
+            patch_size=8,
+        )
     else:
         raise NotImplementedError(cfg.model.lower())
 
