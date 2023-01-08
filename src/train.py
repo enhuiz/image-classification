@@ -124,6 +124,7 @@ def main():
         top1_acc = (logits.argmax(dim=-1) == y).float().mean().item()
 
         stats = {"loss.ce": loss.item(), "acc.top1": top1_acc}
+        stats |= {k: v.item() for k, v in engines.gather_attribute("loss")}
         stats |= engines.gather_attribute("scalar")
 
         return loss, stats

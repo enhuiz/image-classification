@@ -3,6 +3,7 @@ from torchvision.models import resnet18, resnet34, resnet50
 from .resnet_utils import update_resnet_
 from .toy import ToyDilatedModel
 from .vit import ViT
+from .vit_aux import ViTAux
 
 
 def get_model():
@@ -19,6 +20,14 @@ def get_model():
     elif cfg.model.lower() == "vit-12x256-8x8":
         model = ViT(
             num_layers=12,
+            hidden_channels=256,
+            num_heads=4,
+            patch_size=8,
+        )
+    elif cfg.model.lower() == "vit-aux-3x4x256-8x8":
+        model = ViTAux(
+            num_layers_per_block=4,
+            num_blocks=3,
             hidden_channels=256,
             num_heads=4,
             patch_size=8,
