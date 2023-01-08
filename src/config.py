@@ -20,6 +20,10 @@ class Config(ConfigBase):
     normalizer: bool = True
     eval_every: int = 100
 
+    finetune_level: int = 5
+    mixstyle_level: int = 0
+    resnet_norm_type: str = "bn"
+
     @property
     def num_classes(self):
         if self.dataset.lower() in ["mnist", "cifar10"]:

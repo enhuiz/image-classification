@@ -1,0 +1,3 @@
+dataset: cifar100
+model: resnet18
+resnet_norm_type: gn
