@@ -46,12 +46,12 @@ bash ./scripts/plot.sh
 | logs/cifar100/resnet18/1673166948        | test  | 2400 |   0.3539 |
 | logs/cifar100/resnet34/1673168398        | test  | 2800 |   0.3338 |
 
-### Insights
+#### Insights
 
 - It appears that the ResNet model severely overfits on the CIFAR100 dataset. Models with lower training accuracy have larger test accuracy.
 - The Mix-style method [1] helps alleviate this overfitting clearly.
 
-## Puzzles
+#### Puzzles
 
 - Why does the loss suddenly drop periodically (after each epoch)?
 
