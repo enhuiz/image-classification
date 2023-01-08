@@ -18,6 +18,7 @@ class Config(ConfigBase):
     max_iter: int = 5_000
     gradient_clipping: float = 100
     normalizer: bool = True
+    eval_every: int = 100
 
     @property
     def num_classes(self):
