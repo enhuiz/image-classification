@@ -44,7 +44,6 @@ def plot(paths, args):
     for group_name, gdf in df.groupby("group"):
         for y in args.ys:
             gdf = gdf.sort_values("global_step")
-            print(gdf)
 
             gdf.plot(
                 x="global_step",
