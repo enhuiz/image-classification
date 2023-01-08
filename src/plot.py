@@ -75,10 +75,16 @@ def main():
     parser.add_argument("--filename", default="log.txt")
     parser.add_argument("--max-x", default=None)
     parser.add_argument("--group-level", default=1)
+    parser.add_argument("--filter", default=None)
     args = parser.parse_args()
 
     paths = args.log_dir.rglob(f"**/{args.filename}")
+
+    if args.filter:
+        paths = filter(lambda p: re.match(".*" + args.filter + ".*", str(p)), paths)
+
     plot(paths, args)
+
     plt.savefig(args.output, bbox_inches="tight")
 
 

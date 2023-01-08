@@ -34,4 +34,4 @@ bash ./scripts/plot.sh
 
 ## Puzzles
 
-Why does the loss suddenly drop periodically (after each epoch)?
+- Why does the loss suddenly drop periodically (after each epoch)?
