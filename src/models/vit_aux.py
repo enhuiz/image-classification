@@ -1,7 +1,7 @@
 import torch
 import torch.nn.functional as F
 from einops import rearrange, repeat
-from torch import nn
+from torch import Tensor, nn
 
 from .common import SinusodialEmbedding
 
@@ -45,7 +45,7 @@ class ViTAux(nn.Module):
                 )
             )
 
-    def forward(self, x, y):
+    def forward(self, x, y: Tensor | None = None):
         assert x.shape[-1] % self.patch_size == 0
         assert x.shape[-2] % self.patch_size == 0
 
@@ -69,7 +69,7 @@ class ViTAux(nn.Module):
             if i == len(self.blocks) - 1:
                 # Last layer
                 x = mlp(x[0])  # t b d -> b d
-            else:
+            elif y is not None:
                 # Aux layer
                 self.loss[f"aux/{i}"] = F.cross_entropy(mlp(x[0]), y)
 
