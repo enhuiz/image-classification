@@ -1,6 +1,6 @@
+import json
 import logging
 import random
-from collections import defaultdict
 
 import numpy as np
 import torch
@@ -114,7 +114,7 @@ def main():
 
         top1_acc = (logits.argmax(dim=-1) == y).float().mean().item()
 
-        stats = {"loss/ce": loss.item(), "acc.top1": top1_acc}
+        stats = {"loss.ce": loss.item(), "acc.top1": top1_acc}
         stats |= engines.gather_attribute("scalar")
 
         return loss, stats
@@ -122,17 +122,21 @@ def main():
     @torch.inference_mode()
     def run_eval(engines, name, dl):
         model = engines["model"]
-        stats = defaultdict(list)
 
         top1_accs = []
 
         for batch in tqdm(dl):
-            batch: dict
             batch = to_device(batch, cfg.device)
             x, y = batch
-            logits = model(x)
-            h = logits.argmax(dim=-1)
-            top1_accs.extend((h == y).float())
+
+            if cfg.normalizer:
+                x_normed = model.normalizer(x)
+            else:
+                x_normed = x
+
+            logits = model(x_normed)
+
+            top1_accs.extend((logits.argmax(dim=-1) == y).float())
 
         top1_acc = torch.stack(top1_accs).mean().item()
 
@@ -142,12 +146,12 @@ def main():
         with open(log_dir / "top1_acc.txt", "w") as f:
             f.write(str(top1_acc))
 
-        stats = {k: sum(v) / len(v) for k, v in stats.items()}
+        stats = {}
         stats["global_step"] = engines.global_step
         stats["name"] = name
         stats["acc.top1"] = top1_acc
 
-        _logger.info(f"Eval: {stats}.")
+        _logger.info(f"{json.dumps(stats)}.")
 
     def eval_fn(engines):
         run_eval(engines, "train_200", train_200_dl)
