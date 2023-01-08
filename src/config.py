@@ -17,12 +17,13 @@ class Config(ConfigBase):
     warmup_num_steps: int = 5_00
     max_iter: int = 5_000
     gradient_clipping: float = 100
-    normalizer: bool = True
     eval_every: int = 100
 
     finetune_level: int = 5
     mixstyle_level: int = 0
     resnet_norm_type: str = "bn"
+    normalizer: bool = True
+    per_channel_normalizer: bool = False
 
     @property
     def num_classes(self):

@@ -20,10 +20,19 @@ _logger = logging.getLogger(__name__)
 
 def load_engines():
     model = get_model()
-    model.normalizer = Normalizer()
+    if cfg.normalizer:
+        if cfg.per_channel_normalizer:
+            model.normalizer = Normalizer(num_channels=3, axis=1)
+        else:
+            model.normalizer = Normalizer()
+
     engines = dict(
-        model=trainer.Engine(model=model, config=cfg.ds_cfg),
+        model=trainer.Engine(
+            model=model,
+            config=cfg.ds_cfg,
+        ),
     )
+
     return trainer.load_engines(engines, cfg)
 
 
