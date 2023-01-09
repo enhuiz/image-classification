@@ -1,6 +1,7 @@
 import math
 
 import torch
+from einops import repeat
 from torch import nn
 
 
@@ -22,25 +23,40 @@ class SinusodialEmbedding(nn.Module):
     def forward(self, x):
         """
         Args:
-            t: (b t)
+            x: (...)
         Returns:
-            pe: (b d t)
+            pe: (... d)
         """
-        assert x.dim() == 2
-        e = self.omega[None, :, None] * x.unsqueeze(1)
-        e = torch.cat([e.sin(), e.cos()], dim=1)
-        return e
+        omega = self.omega
+        while omega.dim() <= x.dim():
+            omega = omega.unsqueeze(0)  # (... d)
+
+        x = x.unsqueeze(-1)  # (... 1)
+        x = omega * x
+        x = torch.cat([x.sin(), x.cos()], dim=-1)
+
+        return x
+
+    def get_pe(self, n: int):
+        """
+        Args:
+            n: int
+        Returns:
+            pe: (n d)
+        """
+        device = self.omega.device
+        return self.forward(torch.arange(n, device=device))
 
     def add_pe_2d(self, x):
         """
         Args:
             x: (b c h w)
         """
-        h = self.forward(torch.arange(x.shape[2])[None].to(x.device))
-        w = self.forward(torch.arange(x.shape[3])[None].to(x.device))
+        h = self.get_pe(x.shape[2])  # h d
+        w = self.get_pe(x.shape[3])  # w d
 
-        h = h.unsqueeze(3)  # b c h 1
-        w = w.unsqueeze(2)  # b c 1 h
+        h = repeat(h, "h d -> b d h 1", b=len(x))
+        w = repeat(w, "w d -> b d 1 w", b=len(x))
 
         x = x + h + w
 
