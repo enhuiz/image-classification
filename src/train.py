@@ -18,6 +18,21 @@ from .utils import Diagnostic, setup_logging, to_device, trainer
 _logger = logging.getLogger(__name__)
 
 
+def get_transform(training):
+    if training and cfg.use_augmentation:
+        # https://github.com/weiaicunzai/pytorch-cifar100/blob/11d8418f415b261e4ae3cb1ffe20d06ec95b98e4/utils.py#L178
+        return transforms.Compose(
+            [
+                transforms.RandomCrop(32, padding=4),
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomRotation(15),
+                transforms.ToTensor(),
+            ]
+        )
+
+    return transforms.ToTensor()
+
+
 def load_engines():
     model = get_model(cfg.num_classes if cfg.tailor_num_classes else None)
 
@@ -59,14 +74,14 @@ def main():
         str(cfg.data_dir),
         train=True,
         download=True,
-        transform=transforms.ToTensor(),
+        transform=get_transform(training=True),
     )
 
     test_ds = Dataset(
         str(cfg.data_dir),
         train=False,
         download=True,
-        transform=transforms.ToTensor(),
+        transform=get_transform(training=False),
     )
 
     train_dl = DataLoader(

@@ -27,6 +27,7 @@ class Config(ConfigBase):
     per_channel_normalizer: bool = False
     tailor_num_classes: bool = False
     constant_lr: float | None = None
+    use_augmentation: bool = False
 
     @property
     def num_classes(self):
