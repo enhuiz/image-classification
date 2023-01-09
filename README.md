@@ -91,7 +91,7 @@ python -m src.summary
 
 ![](figures/models/acc.top1.png)
 
-### Compare Different Learning Strategy
+### Compare Different Learning Strategies
 
 ![](figures/learning/loss.png)
 
