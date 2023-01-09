@@ -4,11 +4,11 @@ from pathlib import Path
 import pandas as pd
 
 
-def _display(df, max, dup, name):
-    df = df.sort_values(max, ascending=False)
+def _display(df, col, dup):
+    # When value are the same, we choose a smaller step
+    df = df.sort_values("step")
+    df = df.sort_values(col, ascending=False)
     df = df.drop_duplicates(dup)
-    df[name] = df["value"]
-    del df["value"]
     assert isinstance(df, pd.DataFrame)
     print(df.to_markdown(index=False))
 
@@ -39,9 +39,13 @@ def main():
 
     df = pd.DataFrame(rows)
 
+    name = args.filename.split(".")[0]
+    df[name] = df["value"]
+    del df["value"]
+
     for split, grp in df.groupby("split"):
         print(split)
-        _display(grp, max="value", dup=["path"], name=args.filename.split(".")[0])
+        _display(grp, col=name, dup=["path"])
 
 
 if __name__ == "__main__":
