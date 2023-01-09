@@ -2,6 +2,8 @@
 
 Compare some image classification models.
 
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/enhuiz)
+
 ## Clone
 
 ```
@@ -116,7 +118,7 @@ python -m src.summary
 ## References
 
 [1] https://github.com/KaiyangZhou/mixstyle-release
-[2] https://arxiv.org/pdf/1901.02860.pdf
-[3] https://arxiv.org/pdf/2112.13492.pdf
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/enhuiz){:target="\_blank"}
+[2] https://arxiv.org/pdf/1901.02860.pdf
+
+[3] https://arxiv.org/pdf/2112.13492.pdf
