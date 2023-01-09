@@ -8,7 +8,7 @@ from .common import SinusodialEmbedding
 class Attention(nn.Module):
     """
     The idea of diag_mask and learnable_temp comes from: https://arxiv.org/pdf/2112.13492.pdf
-    Rel pos comes form: https://arxiv.org/pdf/1901.02860.pdf
+    Rel pos comes from: https://arxiv.org/pdf/1901.02860.pdf
     """
 
     def __init__(self, num_channels, num_heads, rel_attn, diag_mask, τ_type):
