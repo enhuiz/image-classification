@@ -1,0 +1,2 @@
+dataset: cifar100
+model: vitn-12x256-8x8-ra

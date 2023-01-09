@@ -5,7 +5,7 @@ Compare some image classification models.
 ## Clone
 
 ```
-git clone  --recurse-submodules https://github.com/enhuiz/image-classification.git
+git clone --recurse-submodules https://github.com/enhuiz/image-classification.git
 ```
 
 ## Run

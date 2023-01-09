@@ -33,6 +33,30 @@ def get_model(num_classes=None):
             num_heads=4,
             patch_size=8,
         )
+    elif cfg.model.lower() == "vitn-12x256-8x8-ra":
+        model = ViTN(
+            num_layers=12,
+            hidden_channels=256,
+            num_heads=4,
+            patch_size=8,
+            rel_attn=True,
+        )
+    elif cfg.model.lower() == "vitn-12x256-8x8-dm":
+        model = ViTN(
+            num_layers=12,
+            hidden_channels=256,
+            num_heads=4,
+            patch_size=8,
+            diag_mask=True,
+        )
+    elif cfg.model.lower() == "vitn-12x256-8x8-lt":
+        model = ViTN(
+            num_layers=12,
+            hidden_channels=256,
+            num_heads=4,
+            patch_size=8,
+            learnable_temp=True,
+        )
     elif cfg.model.lower() == "vit-aux-3x4x256-8x8":
         model = ViTAux(
             num_layers_per_block=4,
