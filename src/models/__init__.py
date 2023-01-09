@@ -55,7 +55,15 @@ def get_model(num_classes=None):
             hidden_channels=256,
             num_heads=4,
             patch_size=8,
-            learnable_temp=True,
+            τ_type="log",
+        )
+    elif cfg.model.lower() == "vitn-12x256-8x8-ltv":
+        model = ViTN(
+            num_layers=12,
+            hidden_channels=256,
+            num_heads=4,
+            patch_size=8,
+            τ_type="vanilla",
         )
     elif cfg.model.lower() == "vit-aux-3x4x256-8x8":
         model = ViTAux(

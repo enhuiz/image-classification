@@ -11,7 +11,7 @@ class Attention(nn.Module):
     Rel pos comes form: https://arxiv.org/pdf/1901.02860.pdf
     """
 
-    def __init__(self, num_channels, num_heads, rel_attn, diag_mask, learnable_temp):
+    def __init__(self, num_channels, num_heads, rel_attn, diag_mask, τ_type):
         super().__init__()
         assert num_channels % num_heads == 0
         dim_head = num_channels // num_heads
@@ -27,14 +27,18 @@ class Attention(nn.Module):
             self.pos_v = nn.parameter.Parameter(torch.randn(num_heads, dim_head))
             self.pos_emb = SinusodialEmbedding(num_channels)
 
-        if learnable_temp:
+        if τ_type == "log":
             # Instead of simply use a learnable temp τ
             # Here I learn log 1/τ, which avoid division and sign flipping
             self.log_one_div_by_τ = nn.parameter.Parameter(torch.zeros(1))
+        elif τ_type == "vanilla":
+            self.τ = nn.parameter.Parameter(torch.ones(1))
+        else:
+            assert τ_type is None
 
         self.rel_attn = rel_attn
         self.diag_mask = diag_mask
-        self.learnable_temp = learnable_temp
+        self.τ_type = τ_type
 
     def forward(self, x):
         """
@@ -78,8 +82,12 @@ class Attention(nn.Module):
             mask = mask.unsqueeze(-1).unsqueeze(-1)  # (i j 1 1)
             energy.masked_fill_(mask, -torch.finfo(energy.dtype).max)
 
-        if self.learnable_temp:
+        if self.τ_type == "log":
             energy = energy * self.log_one_div_by_τ.exp()
+        elif self.τ_type == "vanilla":
+            energy = energy / self.τ
+        else:
+            assert self.τ_type is None
 
         attn = energy.softmax(dim=1)  # (i j b h)
 
@@ -109,11 +117,11 @@ class TransformerEncoderLayer(nn.Sequential):
         dropout,
         rel_attn,
         diag_mask,
-        learnable_temp,
+        τ_type,
     ):
         super().__init__(
             PrenormResidual(
-                Attention(num_channels, num_heads, rel_attn, diag_mask, learnable_temp),
+                Attention(num_channels, num_heads, rel_attn, diag_mask, τ_type),
                 num_channels=num_channels,
                 dropout=dropout,
             ),
@@ -137,9 +145,9 @@ class TransformerEncoder(nn.Sequential):
         num_heads,
         dropout,
         num_layers,
-        rel_attn=False,
-        diag_mask=False,
-        learnable_temp=False,
+        rel_attn,
+        diag_mask,
+        τ_type,
     ):
         super().__init__(
             *[
@@ -149,7 +157,7 @@ class TransformerEncoder(nn.Sequential):
                     dropout,
                     rel_attn,
                     diag_mask,
-                    learnable_temp,
+                    τ_type,
                 )
                 for _ in range(num_layers)
             ]
@@ -168,7 +176,7 @@ class ViTN(nn.Module):
         num_classes=1000,
         diag_mask=False,
         rel_attn=False,
-        learnable_temp=False,
+        τ_type=None,
     ):
         super().__init__()
         self.patch_size = patch_size
@@ -179,7 +187,7 @@ class ViTN(nn.Module):
             num_channels=hidden_channels,
             diag_mask=diag_mask,
             rel_attn=rel_attn,
-            learnable_temp=learnable_temp,
+            τ_type=τ_type,
             dropout=dropout,
             num_heads=num_heads,
             num_layers=num_layers,
