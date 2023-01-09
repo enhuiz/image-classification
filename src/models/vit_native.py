@@ -75,6 +75,7 @@ class Attention(nn.Module):
         if self.diag_mask:
             assert energy.shape[0] == energy.shape[1]  # self attention
             mask = torch.eye(energy.shape[0], device=device).bool()
+            mask = mask.unsqueeze(-1).unsqueeze(-1)  # (i j 1 1)
             energy.masked_fill_(mask, -torch.finfo(energy.dtype).max)
 
         if self.learnable_temp:
