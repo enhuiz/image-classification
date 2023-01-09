@@ -49,6 +49,15 @@ def get_model(num_classes=None):
             patch_size=8,
             diag_mask=True,
         )
+    elif cfg.model.lower() == "vitn-12x256-8x8-dm-lt":
+        model = ViTN(
+            num_layers=12,
+            hidden_channels=256,
+            num_heads=4,
+            patch_size=8,
+            diag_mask=True,
+            τ_type="log",
+        )
     elif cfg.model.lower() == "vitn-12x256-8x8-lt":
         model = ViTN(
             num_layers=12,
