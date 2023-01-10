@@ -14,7 +14,7 @@ class Config(ConfigBase):
     eval_batch_size: int = 128
     warmup_min_lr: float = 1e-6
     warmup_max_lr: float = 2e-4
-    warmup_num_steps: int = 5_00
+    warmup_num_steps: int = 500
     max_iter: int = 5_000
     gradient_clipping: float = 100
     eval_every: int = 100
